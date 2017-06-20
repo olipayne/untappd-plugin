@@ -247,32 +247,22 @@ if (! class_exists('Untappd_Settings')) {
             );
 
             add_settings_field(
-                'untappd_field-example1',
-                'Example Field 1',
+                'untappd_field-secret-key',
+                'Untappd Secret Key',
                 array( $this, 'markup_fields' ),
                 'untappd_settings',
                 'untappd_section-basic',
-                array( 'label_for' => 'untappd_field-example1' )
+                array( 'label_for' => 'untappd_field-secret-key' )
             );
 
-
-            /*
-			 * Advanced Section
-			 */
-            add_settings_section(
-                'untappd_section-advanced',
-                'Advanced Settings',
-                __CLASS__ . '::markup_section_headers',
-                'untappd_settings'
-            );
 
             add_settings_field(
-                'untappd_field-example2',
-                'Example Field 2',
+                'untappd_field-client-key',
+                'Untappd Client Key',
                 array( $this, 'markup_fields' ),
                 'untappd_settings',
-                'untappd_section-advanced',
-                array( 'label_for' => 'untappd_field-example2' )
+                'untappd_section-basic',
+                array( 'label_for' => 'untappd_field-client-key' )
             );
 
 
@@ -306,7 +296,7 @@ if (! class_exists('Untappd_Settings')) {
         public function markup_fields($field)
         {
             switch ($field['label_for']) {
-                case 'untappd_field-example1':
+                case 'untappd_field-secret-key':
                     // Do any extra processing here
                     break;
             }
@@ -330,85 +320,16 @@ if (! class_exists('Untappd_Settings')) {
                 $new_settings['db-version'] = Untappd_Plugin::VERSION;
             }
 
-
             /*
 			 * Basic Settings
 			 */
 
-            if (strcmp($new_settings['basic']['field-example1'], 'valid data') !== 0) {
-                add_notice('Example 1 must equal "valid data"', 'error');
-                $new_settings['basic']['field-example1'] = self::$default_settings['basic']['field-example1'];
-            }
-
-
-            /*
-			 * Advanced Settings
-			 */
-
-            $new_settings['advanced']['field-example2'] = absint($new_settings['advanced']['field-example2']);
-
+            //if (strcmp($new_settings['basic']['field-example1'], 'valid data') !== 0) {
+            //    add_notice('Example 1 must equal "valid data"', 'error');
+            //    $new_settings['basic']['field-example1'] = self::$default_settings['basic']['field-example1'];
+            //}
 
             return $new_settings;
-        }
-
-
-        /*
-		 * User Settings
-		 */
-
-        /**
-         * Adds extra option fields to a user's profile
-         *
-         * @mvc Controller
-         *
-         * @param object
-         */
-        public static function add_user_fields($user)
-        {
-            echo self::render_template('untappd-settings/user-fields.php', array( 'user' => $user ));
-        }
-
-        /**
-         * Validates and saves the values of extra user fields to the database
-         *
-         * @mvc Controller
-         *
-         * @param int $user_id
-         */
-        public static function save_user_fields($user_id)
-        {
-            $user_fields = self::validate_user_fields($user_id, $_POST);
-
-            update_user_meta($user_id, 'untappd_user-example-field1', $user_fields[ 'untappd_user-example-field1' ]);
-            update_user_meta($user_id, 'untappd_user-example-field2', $user_fields[ 'untappd_user-example-field2' ]);
-        }
-
-        /**
-         * Validates submitted user field values before they get saved to the database
-         *
-         * @mvc Model
-         *
-         * @param int   $user_id
-         * @param array $user_fields
-         * @return array
-         */
-        public static function validate_user_fields($user_id, $user_fields)
-        {
-            if ($user_fields[ 'untappd_user-example-field1' ] == false) {
-                $user_fields[ 'untappd_user-example-field1' ] = true;
-                add_notice('Example Field 1 should be true', 'error');
-            }
-
-            if (! current_user_can('manage_options')) {
-                $current_field2 = get_user_meta($user_id, 'untappd_user-example-field2', true);
-
-                if ($current_field2 != $user_fields[ 'untappd_user-example-field2' ]) {
-                    $user_fields[ 'untappd_user-example-field2' ] = $current_field2;
-                    add_notice('Only administrators can change Example Field 2.', 'error');
-                }
-            }
-
-            return $user_fields;
         }
     } // end Untappd_Settings
 }
