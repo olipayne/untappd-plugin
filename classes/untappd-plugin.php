@@ -1,5 +1,7 @@
 <?php
 
+use Carbon\Carbon;
+
 if (! class_exists('Untappd_Plugin')) {
 
     /**
@@ -178,6 +180,53 @@ if (! class_exists('Untappd_Plugin')) {
             add_action('wpmu_new_blog', array( $this, 'activate_new_site' ));
             add_action('init', array( $this, 'init' ));
             add_action('init', array( $this, 'upgrade' ), 11);
+
+            add_shortcode('untappd', array( $this, 'shortcode_brewery'));
+        }
+
+        public function shortcode_brewery($atts)
+        {
+            $args = shortcode_atts(array(
+                'brewery' => ''
+            ), $atts);
+
+            if ($args['brewery'] == '') {
+                return 'No brewery argument set';
+            }
+
+            $brewery_id = (int) $args['brewery'];
+
+            $request_uri = 'https://api.untappd.com/v4/brewery/checkins/' . $brewery_id;
+
+            $secret_key = $this->modules['Untappd_Settings']->settings['basic']['field-secret-key'];
+            $client_id = $this->modules['Untappd_Settings']->settings['basic']['field-client-id'];
+
+            // Add query args to authenticate
+            $request_uri = add_query_arg('client_id', $client_id, $request_uri);
+            $request_uri = add_query_arg('client_secret', $secret_key, $request_uri);
+
+            $json = json_decode(file_get_contents($request_uri));
+
+            // echo '<pre>';
+            // var_dump($json->response->checkins->items);
+            // echo '</pre>';
+
+            $checkins = $json->response->checkins->items;
+
+            $result = '<table class="table">';
+            foreach ($checkins as $checkin) {
+                //var_dump($checkin);
+                $time_stamp = new Carbon($checkin->created_at);
+                $result .= '<tr>';
+                $result .= '<td>';
+                $result .= $checkin->user->first_name . ' drank a ' . $checkin->beer->beer_name;
+                $result .= ' <small>' . $time_stamp->diffForHumans() . '</small>';
+                $result .= '</td>';
+                $result .= '</tr>';
+            }
+            $result .= '</table>';
+            
+            return $result;
         }
 
         /**

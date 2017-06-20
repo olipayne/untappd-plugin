@@ -192,7 +192,6 @@ if (! class_exists('Untappd_Settings')) {
          */
         public static function add_plugin_action_links($links)
         {
-            array_unshift($links, '<a href="http://wordpress.org/extend/plugins/untappd-plugin/faq/">Help</a>');
             array_unshift($links, '<a href="options-general.php?page=' . 'untappd_settings">Settings</a>');
 
             return $links;
@@ -257,12 +256,12 @@ if (! class_exists('Untappd_Settings')) {
 
 
             add_settings_field(
-                'untappd_field-client-key',
-                'Untappd Client Key',
+                'untappd_field-client-id',
+                'Untappd Client ID',
                 array( $this, 'markup_fields' ),
                 'untappd_settings',
                 'untappd_section-basic',
-                array( 'label_for' => 'untappd_field-client-key' )
+                array( 'label_for' => 'untappd_field-client-id' )
             );
 
 

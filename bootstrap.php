@@ -56,11 +56,10 @@ function untappd_requirements_error()
  * The main program needs to be in a separate file that only gets loaded if the plugin requirements are met. Otherwise older PHP installations could crash when trying to parse it.
  */
 if (untappd_requirements_met()) {
+    require_once(__DIR__ . '/vendor/autoload.php');
     require_once(__DIR__ . '/classes/untappd-module.php');
     require_once(__DIR__ . '/classes/untappd-plugin.php');
     require_once(__DIR__ . '/includes/admin-notice-helper/admin-notice-helper.php');
-    //require_once(__DIR__ . '/classes/untappd-custom-post-type.php');
-    //require_once(__DIR__ . '/classes/untappd-cpt-example.php');
     require_once(__DIR__ . '/classes/untappd-settings.php');
     require_once(__DIR__ . '/classes/untappd-cron.php');
     require_once(__DIR__ . '/classes/untappd-instance-class.php');
