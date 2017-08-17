@@ -226,7 +226,7 @@ if (! class_exists('Untappd_Plugin')) {
                 }
                 if ($checkin->checkin_comment != '') {
                     $result .= '</br>';
-                    $result .= '<i><small>' . $checkin->checkin_comment . '</small></i>';
+                    $result .= '<i><small>"' . $checkin->checkin_comment . '"</small></i>';
                 }
                 $result .= '</br>';
                 $result .= ' <small>' . $time_stamp->diffForHumans() . '</small>';
