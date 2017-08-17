@@ -221,8 +221,12 @@ if (! class_exists('Untappd_Plugin')) {
                 $result .= '<td>';
 		/**$result .= $checkin->user->user_avatar;*/
                 $result .= $checkin->user->first_name . ' drank ' . $checkin->beer->beer_name . ' and rated it ' . $checkin->rating_score;
-$result .= '</br>';
-                $result .= ' <small>' . $time_stamp->diffForHumans() . '</small>';
+			if ($checkin->checkin_comment != ''){ 
+				$result .= '</br>';
+                		$result .= $checkin->checkin_comment;
+				}
+                $result .= '</br>';
+		$result .= ' <small>' . $time_stamp->diffForHumans() . '</small>';
                 $result .= '</td>';
                 $result .= '</tr>';
             }
