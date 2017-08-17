@@ -219,7 +219,6 @@ if (! class_exists('Untappd_Plugin')) {
                 $time_stamp = new Carbon($checkin->created_at);
                 $result .= '<tr>';
                 $result .= '<td>';
-		/**$result .= $checkin->user->user_avatar;*/
                 $result .= $checkin->user->first_name . ' drank ' . $checkin->beer->beer_name . ' and rated it ' . $checkin->rating_score;
 			if ($checkin->checkin_comment != ''){ 
 				$result .= '</br>';
