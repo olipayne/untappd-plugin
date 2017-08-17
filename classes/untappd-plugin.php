@@ -36,7 +36,7 @@ if (! class_exists('Untappd_Plugin')) {
             $this->modules = array(
                 'Untappd_Settings'    => Untappd_Settings::get_instance(),
                 'Untappd_Cron'        => Untappd_Cron::get_instance()
-            );
+                );
         }
 
 
@@ -188,7 +188,7 @@ if (! class_exists('Untappd_Plugin')) {
         {
             $args = shortcode_atts(array(
                 'brewery' => ''
-            ), $atts);
+                ), $atts);
 
             if ($args['brewery'] == '') {
                 return 'No brewery argument set';
@@ -219,13 +219,17 @@ if (! class_exists('Untappd_Plugin')) {
                 $time_stamp = new Carbon($checkin->created_at);
                 $result .= '<tr>';
                 $result .= '<td>';
-                $result .= $checkin->user->first_name . ' drank ' . $checkin->beer->beer_name . ' and rated it ' . $checkin->rating_score;
-			if ($checkin->checkin_comment != ''){ 
-				$result .= '</br>';
-                		$result .= $checkin->checkin_comment;
-				}
+                $result .= '<a target="_blank" href="https://untappd.com/user/' . $checkin->user->user_name . '/checkin/' . $checkin->checkin_id . '">' . $checkin->user->first_name . '</a> drank ';
+                $result .= '<a target="_blank" href="https://untappd.com/b/' . $checkin->beer->beer_slug .'/' . $checkin->beer->bid .'">' . $checkin->beer->beer_name . '</a>';
+                if ($checkin->rating_score > 0) {
+                    $result .= ' and rated it ' . $checkin->rating_score;
+                }
+                if ($checkin->checkin_comment != '') {
+                    $result .= '</br>';
+                    $result .= $checkin->checkin_comment;
+                }
                 $result .= '</br>';
-		$result .= ' <small>' . $time_stamp->diffForHumans() . '</small>';
+                $result .= ' <small>' . $time_stamp->diffForHumans() . '</small>';
                 $result .= '</td>';
                 $result .= '</tr>';
             }
